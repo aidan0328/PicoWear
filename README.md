@@ -3,7 +3,6 @@
 
 ### 上課教材
 
-https://www.canva.com/design/DAGOx94dLKc/ov40Z0DEk-gSGw5tJ7UFJA/edit?utm_content=DAGOx94dLKc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 **0. 大綱**
 
 https://www.canva.com/design/DAGOx94dLKc/dWBkCMp69cT_oiPN3HASxA/view?utm_content=DAGOx94dLKc&utm_campaign=designshare&utm_medium=link&utm_source=editor
