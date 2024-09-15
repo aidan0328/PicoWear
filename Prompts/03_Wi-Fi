@@ -1,0 +1,32 @@
+不使用額外的模組,只有改寫 main.py 的程式碼,請使用中文說明,來完成以下的需求:
+
+1. 利用以下的資訊，連接到 Wi-Fi，
+    ssid = "WIFI 的 SSID"
+    password = "WIFI 的 密碼"
+
+2. pico_wear.wifi.isconnected() 是用來判斷 Wi-Fi 是否已經連線 
+3. 還未連線之前要讓 pico_wear.led 不斷閃爍，一旦連上就恆亮
+
+4. OLED 每行最多只能顯示 16個字，超出的話要換行顯示
+5. 把 ip 顯示在 OLED 上，如果超出16個字，就換到下一行
+
+# main.py
+
+from Pico_Wear import PicoWear  # 引入 PicoWear 類別
+import time
+
+# ========== 全域變數 ==========
+pico_wear = None
+
+# =============================
+
+def main():
+    global pico_wear
+    pico_wear = PicoWear()
+    print('完成 Pico Wear 的初始化')
+    
+    while True:
+        time.sleep(0.1)
+
+if __name__ == '__main__':
+    main()
