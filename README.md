@@ -9,7 +9,7 @@ https://www.canva.com/design/DAGOx94dLKc/dWBkCMp69cT_oiPN3HASxA/view?utm_content
 
 **1. 樹莓派與 Raspberry Pi Pico 概述**
 
-https://www.canva.com/design/DAGO07g48D4/gvuYLAJ4vkTu3zBgzW1asQ/view?utm_content=DAGO07g48D4&utm_campaign=designshare&utm_medium=link&utm_source=editor
+https://www.canva.com/design/DAGOwoyDeXc/4_-fGWsX-Jja_pI7QbO1dA/view?utm_content=DAGOwoyDeXc&utm_campaign=designshare&utm_medium=link&utm_source=editor
 
 **2. 開發環境設置**
 
