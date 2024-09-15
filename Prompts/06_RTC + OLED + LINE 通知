@@ -9,7 +9,7 @@
 4. OLED 每行最多只能顯示 16個字，超出的話要換行顯示
 5. 把 pico_wear.rtc 的時間與日期顯示在 OLED
 
-6.  LINE Notify 的 token："自己的 LINE NOTIFY 權杖"
+6.  LINE Notify 的權杖："自己的 LINE NOTIFY 權杖"
 7. 把 pico_wear.rtc 透過  pico_wear.line_notify_message() 送到 LINE
 8. button_clicked 是按鈕的回呼函式
 9. 回呼函式是透過 pico_wear.line_notify_message() 送到 LINE
