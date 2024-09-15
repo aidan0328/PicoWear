@@ -3,7 +3,7 @@
 1. pico_wear.mpu.update_mahony() 更新姿態數據，每 100 毫秒更新一次
 2. pico_wear.mpu.get_angles() 取得尤拉角
 3. OLED 每行最多只能顯示 16個字，超出的話要換行顯示
-4. 尤拉角顯示在 OLED 上
+4. 尤拉角分3行顯示在 OLED 上
 
 # main.py
 
