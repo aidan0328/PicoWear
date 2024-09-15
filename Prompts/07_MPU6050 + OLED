@@ -1,0 +1,27 @@
+不使用額外的模組,只有改寫 main.py 的程式碼,請使用中文說明,來完成以下的需求:
+
+1. pico_wear.mpu.update_mahony() 更新姿態數據，每 100 毫秒更新一次
+2. pico_wear.mpu.get_angles() 取得尤拉角
+3. OLED 每行最多只能顯示 16個字，超出的話要換行顯示
+4. 尤拉角顯示在 OLED 上
+
+# main.py
+
+from Pico_Wear import PicoWear  # 引入 PicoWear 類別
+import time
+
+# ========== 全域變數 ==========
+pico_wear = None
+
+# =============================
+
+def main():
+    global pico_wear
+    pico_wear = PicoWear()
+    print('完成 Pico Wear 的初始化')
+    
+    while True:
+        time.sleep(0.1)
+
+if __name__ == '__main__':
+    main()
