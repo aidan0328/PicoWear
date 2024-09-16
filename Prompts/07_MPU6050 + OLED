@@ -1,4 +1,4 @@
-不使用額外的模組,只有改寫 main.py 的程式碼,請使用中文說明,來完成以下的需求:
+不使用額外的模組,只有改寫 main.py 的程式碼,請使用繁體中文說明,來完成以下的需求:
 
 1. pico_wear.mpu.update_mahony() 更新姿態數據，每 100 毫秒更新一次
 2. pico_wear.mpu.get_angles() 取得尤拉角
