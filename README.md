@@ -34,3 +34,10 @@ https://www.canva.com/design/DAGQzWKl-g4/RgtA7998S8DVjzdpyLK9sg/view?utm_content
 https://www.canva.com/design/DAGQz35W4Ic/X4unkThlZpC8OR6XFR9A0A/view?utm_content=DAGQz35W4Ic&utm_campaign=designshare&utm_medium=link&utm_source=editor
 
 **MQTT 的介紹**
+
+https://www.canva.com/design/DAGRALwAEuI/DwGYacvl-RyjN2D0Xgr-PA/view?utm_content=DAGRALwAEuI&utm_campaign=designshare&utm_medium=link&utm_source=editor
+
+
+**恢復到出廠狀態**
+
+https://www.canva.com/design/DAGO07g48D4/Z_YyjkSvVxo_pzXAIgDcTA/edit?ui=eyJEIjp7IlQiOnsiQSI6IlBCVE5MZlZzZ3pUVExRVnQifX19
