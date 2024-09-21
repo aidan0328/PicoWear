@@ -1,7 +1,7 @@
 不使用額外的模組,只有改寫 main.py 的程式碼,請使用繁體中文說明,來完成以下的需求:
 
 1. OLED 每行最多只能顯示 16個字，超出的話要換行顯示
-2. 把 pico_wear.rtc 的時間與日期顯示在 OLED
+2. 把 pico_wear.rtc.datetime() 的時間與日期顯示在 OLED
 
 # main.py
 
