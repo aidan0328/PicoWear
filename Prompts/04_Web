@@ -13,6 +13,8 @@
 6. Wi-Fi 有連上之後，就提供一個 Web 服務器，網頁上都是英文
 7. 網頁有2個按鈕，可以控制 pico_led 的亮、滅，並且可以在網頁上顯示 led 的狀態
 
+給我完整的程式碼
+
 # main.py
 
 from Pico_Wear import PicoWear  # 引入 PicoWear 類別
