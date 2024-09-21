@@ -4,6 +4,7 @@
 2. 回呼函式是讓 pico_wear.led 轉態
 3. 使用 pico_wear.register_button_callback() 設定按鈕的回呼函
 
+給我完整的程式碼
 # main.py
 
 from Pico_Wear import PicoWear  # 引入 PicoWear 類別
