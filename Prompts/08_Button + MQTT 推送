@@ -16,6 +16,8 @@
  傳送主題(Topic)：pico_w/led
  訊息：MAC 地址 + 時間 + LED 狀態
 
+給我完整的程式碼
+
 # main.py
 
 from Pico_Wear import PicoWear  # 引入 PicoWear 類別
