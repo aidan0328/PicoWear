@@ -3,6 +3,8 @@
 1. OLED 每行最多只能顯示 16個字，超出的話要換行顯示，只能顯示英文字
 2. 把 pico_wear.rtc.datetime() 的時間與日期顯示在 OLED
 
+給我完整的程式碼
+
 # main.py
 
 from Pico_Wear import PicoWear  # 引入 PicoWear 類別
