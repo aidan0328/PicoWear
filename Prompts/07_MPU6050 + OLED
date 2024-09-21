@@ -5,6 +5,8 @@
 3. OLED 每行最多只能顯示 16個字，超出的話要換行顯示，只能顯示英文字
 4. 尤拉角分3行顯示在 OLED 上
 
+給我完整的程式碼
+
 # main.py
 
 from Pico_Wear import PicoWear  # 引入 PicoWear 類別
