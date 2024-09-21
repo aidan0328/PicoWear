@@ -12,6 +12,8 @@
 6. 訂閱一則 MQTT 訊息，訂閱主題：pico_w，將收到的顯示在 OLED
 7. 每收到一則MQTT 訊息，就讓 LED 轉態
 
+給我完整的程式碼
+
 # main.py
 
 from Pico_Wear import PicoWear  # 引入 PicoWear 類別
