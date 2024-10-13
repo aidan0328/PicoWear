@@ -1,4 +1,4 @@
-不使用額外的模組,只有改寫 main.py 的程式碼,請使用繁體中文說明,來完成以下的需求:
+使用 Raspberry Pi Pico W 而且是執行在 MicroPython，不使用額外的模組,只有改寫 main.py 的程式碼,請使用繁體中文說明,來完成以下的需求:
 
 1. 利用以下的資訊，連接到 Wi-Fi，
     ssid = "WIFI 的 SSID"
@@ -7,7 +7,7 @@
 2. pico_wear.wifi.isconnected() 是用來判斷 Wi-Fi 是否已經連線 
 3. 還未連線之前要讓 pico_wear.led 不斷閃爍，一旦連上就恆亮
 
-4. OLED 每行最多只能顯示 16個字，超出的話要換行顯示
+4. OLED 每行最多只能顯示 16個字，超出的話要換行顯示，只能顯示英文字
 5. 把 pico_wear.mac_addr 顯示在 OLED 上，如果超出16個字，就換到下一行
 
 6. MQTT 服務器：https://broker.mqttgo.io/
@@ -15,6 +15,8 @@
 8. 回呼函式會切換 LED 的亮滅，然後傳送以下的訊息到 MQTT 服務器
  傳送主題(Topic)：pico_w/led
  訊息：MAC 地址 + 時間 + LED 狀態
+
+給我完整的程式碼
 
 # main.py
 

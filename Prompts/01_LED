@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Pico_Wear.py
 PicoWear 類別于控制 Pico Wear 硬件，主要函数说明如下：
 __init__(): 初始化 PicoWear 对象，设置定时器、LED、显示屏、MPU6050 传感器、Wi-Fi、RTC 和 MQTT 客户端。
@@ -11,6 +12,9 @@ mqtt_connect(mqtt_broker): 连接到指定的 MQTT 服务器。参数 mqtt_broke
 注册并处理按钮按下事件。
 发送消息到 LINE Notify 服务。
 连接到 MQTT 服务器进行消息通信。
+=======
+使用 Raspberry Pi Pico W 而且是執行在 MicroPython，不使用額外的模組,只有改寫 main.py 的程式碼,請使用繁體中文說明,來完成以下的需求： 
+>>>>>>> 1e018304872ee421f64e6d424cff79f4dfe71f0c
 
 PicoWear.display使用說明
 這是Micropython中一個OLED的驅動
@@ -106,6 +110,8 @@ pico_wear.led.value(0)  # 熄滅 LED
 pico_wear.led.toggle()  # 轉泰 LED
 
 # 不使用額外的模組,只有改寫 main.py 的程式碼,請使用繁體中文說明,來完成以下的需求： 
+
+給我完整的程式碼
 
 # main.py
 
