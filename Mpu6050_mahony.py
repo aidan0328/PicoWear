@@ -1,37 +1,20 @@
 '''
 Mpu6050_mahony.py
-這個 MPU6050 類別是為了在 MicroPython 環境中使用 MPU6050 陀螺儀和加速度計感測器設計的。
+使用 MPU6050 陀螺儀和加速度計感測器設計的。
 它可以進行平躺Roll Pitch ，站立時傾斜角度的計算，並透過Mahony濾波算法來實現更準確的姿態估計。
-使用範例
-from machine import Pin, I2C, RTC,Timer
-from Mpu6050_mahony import MPU6050
-from machine import mem32
-
-# mpu6050 的電源
-PAD_CONTROL_REGISTER = 0x4001c05c #讓PIN電流提升
-mem32[PAD_CONTROL_REGISTER] = mem32[PAD_CONTROL_REGISTER] | 0b0110000
-# GP22 為mpu6050的電源輸出，務必設置輸出 1 才能啟動mpu6050
-pin22 = Pin(22, Pin.OUT, value=0)
-time.sleep(1)
-pin22 = Pin(22, Pin.OUT, value=1)
-time.sleep(1)
-# 初始化I2C
-i2c0 = I2C(0, scl=Pin(21), sda=Pin(20), freq=400000)
-# 初始化MPU6050
-mpu = MPU6050(i2c0)
-
-務必每秒一百次計算才能取得穩定角度建議搭配TimeToDoFile
-計算姿態與主程式使用不同TimeToDo以提升運算頻率
-mpu.update_mahony()
-mpu.calculate_tilt_angles()
-
+務必每秒100計算才能取得穩定角度,請單獨一個Timer呼叫計算
+mpu.update_mahony()  #如果要取得roll pitch
+mpu.calculate_tilt_angle() #如果要站立Get_tilt_angle
+該類別已使用雙緩衝去除角度計算競爭
+注意
+Timer中斷頻率高,請在主程式判斷KeyboardInterrupt時使用for timer in timers: timer.deinit(),關閉所有Timer
 主要方法
 __init__(self, i2c, addr=0x68)
     初始化 MPU6050 類別。
     參數 i2c 是必須的，它是一個已配置的 I2C 對象。
     參數 addr 是設備的 I2C 地址，默認為 0x68。
 calibrate(self, samples=100)
-    校準 MPU6050，減少讀數誤差。這個方法會收集多個樣本來計算平均偏差。
+    校準 MPU6050 roll pitch，減少讀數誤差。
 update_mahony(self)
     計算mpu6050平躺的。更新姿態估計，使用 Mahony 濾波算法。
     這個方法會自動根據加速度計和陀螺儀的讀數更新四元數，從而得到較準確的姿態角。
@@ -44,13 +27,16 @@ read_gyro(self)
     讀取陀螺儀數據，從 MPU6050 的陀螺儀傳感器獲取數據。返回的陀螺儀數據經過轉換為度每秒（deg/s），描述角速度。
 read_accel_raw(self)
     直接讀取原始加速度數據。
-calculate_tilt_angles_with_filter(self)
+calculate_tilt_angle(self)
     計算mpu6050站立之後的傾斜角度，使用互補濾波器來平滑角度變化，以應對快速動態變化。
-    此方法返回的角度以度（°）為單位，並會將角度維持在 -180° 到 180° 的範圍內。
-Get_tilt_angles(self)
-    取得Get_tilt_angles計算後的角度
+    務必每秒100計算才能算出穩定角度。
+    只有計算要取出角度請使用Get_tilt_angle()
+Get_tilt_angle(self)
+    取得calculate_tilt_angles計算後的tilt角度
+    此方法返回tilt角度以(度)為單位，並會將角度維持在 -180° 到 180° 的範圍內。
 calibrate_tilt(self, num_samples=100)
     校準站立時傾斜角度，主要用於設置加速度計的偏移值。
+
 '''
 
 import math
@@ -218,8 +204,8 @@ class MPU6050:
     
     def get_angles(self): #回傳Eular角度
         yaw = self.yaw * 57.29578  # 弧度轉度數
-        pitch = self.pitch * 57.29578  # 弧度轉度數
-        roll = self.roll * 57.29578 +  180 # 弧度轉度數
+        pitch = (self.pitch * 57.29578) -  self.pitch_offset  # 弧度轉度數並扣除偏移
+        roll = (self.roll * 57.29578 + 180) - self.roll_offset  # 弧度轉度數並扣除偏移
         if (roll > 180): 
             roll = roll - 360
         return -roll , pitch , yaw
@@ -236,7 +222,7 @@ class MPU6050:
             accel_z -= self.accel_z_offset
         return (accel_x, accel_y, accel_z)  
     
-    def calculate_tilt_angles_with_filter(self):
+    def calculate_tilt_angle_with_filter(self):
         x, y, z = self.read_accel_raw()
         accel_angle = atan2(y, x) * (180 / pi)  # 轉換為度
         if (accel_angle < -180):
@@ -269,7 +255,7 @@ class MPU6050:
         return accel_angle #如果不需要互補算法 這裡就可以回傳
     '''
     
-    def calculate_tilt_angles(self):
+    def calculate_tilt_angle(self):
         # 讀取加速度計和陀螺儀數據
         ax, ay, az = self.read_accel_raw()
         gx, gy, gz = self.read_gyro()
@@ -304,7 +290,7 @@ class MPU6050:
 
         return self.last_tilt_angle
 
-    def Get_tilt_angles(self):
+    def Get_tilt_angle(self):
         return  self.last_tilt_angle
     
     def calibrate_tilt(self, num_samples=100):
@@ -346,13 +332,13 @@ if __name__ == '__main__':
         # 每 10 毫秒讀取一次數據 (100Hz)
         if (time.ticks_us() - timestamp) > 10000:
             mpu.update_mahony()
-            mpu.calculate_tilt_angles()
+            mpu.calculate_tilt_angle()
             timestamp = time.ticks_us()
         
         # 每 100 毫秒ㄒ顯示一次數據 (10Hz) 太常顯示會讓效能降低
         if (time.ticks_us() - lastPrint) > 100000:
             roll , pitch , yaw = mpu.get_angles()
-            tilt1 =  mpu.last_tilt_angle
+            tilt1 =  mpu.Get_tilt_angle()
             print("titl: {:.2f} Orientation: Yaw: {:.2f}, Pitch: {:.2f}, Roll: {:.2f}".format(tilt1 ,yaw, pitch, roll))
             lastPrint = time.ticks_us()
         

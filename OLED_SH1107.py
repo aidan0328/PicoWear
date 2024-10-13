@@ -1,11 +1,14 @@
 '''
-這是Micropython
-OLED_SH1107.py 使用方法
+這是Micropython中一個OLED的驅動
+他的大小為128x128的單色螢幕
+sh1107.py 使用方法
+
 import sh1107
-import Pico_Wear
-display, mpu = Pico_Ware_Tools.Pico_Ware_Init()
+import Pico_Wear 
+display, mpu = Pico_Wear.Pico_Wear_Init()
 
 基本繪圖:
+繼承framebuf.FrameBuffer 除了原本framebuf.FrameBuffer的函數還包含如下
 畫點: display.pixel(x, y, color)
 畫線: display.line(x1, y1, x2, y2, color)
 畫矩形: display.draw_rectangle(x, y, width, height, color)
@@ -17,7 +20,8 @@ display, mpu = Pico_Ware_Tools.Pico_Ware_Init()
 文字顯示:
 顯示文字: display.text("Hello", x, y, color)
 位圖顯示:
-繪製位圖: display.drawBitmap(x, y, bitmap, width, height)
+讀取圖片：Image_fb = display.read_bmp_mono('圖片路徑名稱')
+繪製位圖: display.drawBitmap(self,Image_fb, x, y )
 顯示控制:
 更新顯示: display.show()
 清除顯示: display.fill(0) 然後 display.show()
@@ -32,7 +36,8 @@ display, mpu = Pico_Ware_Tools.Pico_Ware_Init()
 顏色使用1表示點亮，0表示熄滅
 座標系統從左上角(0,0)開始
 在進行任何繪圖操作後，需要調用display.show()來更新顯示
-畫面更新使用單獨TimeToDo 建議60FPS 如果效能不佳再往下調整
+
+請幫我寫出
 '''
 from machine import Pin, I2C, RTC, Timer , mem32
 from micropython import const
@@ -40,6 +45,7 @@ import utime as time
 import framebuf
 import math
 import random
+
 
 # Register definitions
 _SET_CONTRAST        = const(0x81)
@@ -69,7 +75,6 @@ class SH1107(framebuf.FrameBuffer):
         self.pages = self.height // 8
         self.buffer = bytearray(self.pages * self.width)
         super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
-        
         self.init_display()
 
     # Initialize the display
@@ -87,11 +92,10 @@ class SH1107(framebuf.FrameBuffer):
         self.write_cmd(0xD3)  # Set Display Offset
         self.write_cmd(0x02)  # 2px
         
- 
         self.write_cmd(0x81)  # Set Contrast Control
-        self.write_cmd(0xFF)  # 最大对比度
+        self.write_cmd(178)  # 最大对比度
         self.write_cmd(0xD9)  # Set Pre-charge Period
-        self.write_cmd(215)  # 增加预充电周期以提高亮度
+        self.write_cmd(214)  # 增加预充电周期以提高亮度
         self.write_cmd(0xDB)  # Set VCOMH Deselect Level
         self.write_cmd(0x30)  # VCOM Deselect Level
         self.write_cmd(0xAD)  # Set DC-DC Control Mode Set
@@ -230,25 +234,8 @@ class SH1107(framebuf.FrameBuffer):
         self.hline(x0 - y, y0 + x, 2 * y + 1, color)
         self.hline(x0 - y, y0 - x, 2 * y + 1, color)
         
-    def drawBitmap(self, x, y, bitmap, width, height):
-        """
-        繪製位圖到 OLED 顯示器。
-
-        @param x 水平起始位置。
-        @param y 垂直起始位置。
-        @param bitmap 包含位圖數據的字節陣列。
-        @param width 位圖的寬度。
-        @param height 位圖的高度。
-        """
-        for j in range(height):
-            for i in range(width):
-                # 計算位圖中的索引位置
-                index = j * (width // 8) + i // 8
-                # 讀取對應的位值
-                if (bitmap[index] >> (7 - i % 8)) & 1:
-                    self.pixel(x + i, y + j, 1)
-                else:
-                    self.pixel(x + i, y + j, 0)
+    def drawBitmap(self, fb , x, y):
+        self.blit(fb, x, y)  
 
 # SH1107 I2C class, inherits from SH1107
 class SH1107_I2C(SH1107):
@@ -275,6 +262,67 @@ class SH1107_I2C(SH1107):
     # Reset the display
     def reset(self):
         super().reset(self.res)
+        
+    @staticmethod
+    def read_bmp_mono(filename):
+        with open(filename, 'rb') as f:
+            # Read the file header (14 bytes)
+            bfType = f.read(2)
+            if bfType != b'BM':
+                raise ValueError('Not a BMP file')
+            bfSize = int.from_bytes(f.read(4), 'little')
+            bfReserved1 = f.read(2)
+            bfReserved2 = f.read(2)
+            bfOffBits = int.from_bytes(f.read(4), 'little')
+            
+            # Read the info header (40 bytes)
+            biSize = int.from_bytes(f.read(4), 'little')
+            biWidth = int.from_bytes(f.read(4), 'little')
+            biHeight = int.from_bytes(f.read(4), 'little')
+            biPlanes = int.from_bytes(f.read(2), 'little')
+            biBitCount = int.from_bytes(f.read(2), 'little')
+            biCompression = int.from_bytes(f.read(4), 'little')
+            biSizeImage = int.from_bytes(f.read(4), 'little')
+            biXPelsPerMeter = int.from_bytes(f.read(4), 'little')
+            biYPelsPerMeter = int.from_bytes(f.read(4), 'little')
+            biClrUsed = int.from_bytes(f.read(4), 'little')
+            biClrImportant = int.from_bytes(f.read(4), 'little')
+            
+            if biBitCount != 1:
+                raise ValueError('Only 1-bit BMP files are supported')
+            
+            # Calculate the number of bytes per row (padded to a multiple of 4 bytes)
+            bytes_per_row_padded = ((biWidth + 31) // 32) * 4  # Number of bytes including padding
+            bytes_per_row = (biWidth + 7) // 8  # Actual number of bytes per row without padding
+            
+            # Move to the pixel data offset
+            f.seek(bfOffBits)
+            
+            # Read the pixel data
+            pixel_data = f.read(bytes_per_row_padded * abs(biHeight))
+            
+            # Convert the pixel data to image data
+            image_data = bytearray()
+            width = biWidth
+            height = abs(biHeight)
+
+            # Adjust pixel data reading based on the sign of biHeight
+            if biHeight > 0:
+                # Bottom-up bitmap: start from the last row
+                for y in range(height):
+                    row_start = (height - 1 - y) * bytes_per_row_padded
+                    row = pixel_data[row_start:row_start + bytes_per_row]
+                    image_data.extend(row)
+            else:
+                # Top-down bitmap: start from the first row
+                for y in range(height):
+                    row_start = y * bytes_per_row_padded
+                    row = pixel_data[row_start:row_start + bytes_per_row]
+                    image_data.extend(row)
+            
+            # Create the FrameBuffer
+            fb = framebuf.FrameBuffer(image_data, width, height, framebuf.MONO_HLSB)
+            return fb
 
 
 # 主函数
@@ -294,6 +342,8 @@ def main():
     i2c1 = I2C(1, scl=Pin(7), sda=Pin(6), freq=400000)
     display = SH1107_I2C(128, 128, i2c1, None, 0x3c)
     
+
+    #Image_fb = display.read_bmp_mono('Dinosaur.bmp')
     # Initialize 30 squares
     squares = []
     for _ in range(30):
@@ -319,7 +369,7 @@ def main():
             # Update the display clock setting
             
             
-            #display.write_cmd(0xD9)  # Set Display Clock Divide Ratio/Oscillator Frequency
+            #display.write_cmd(0x81)  # Set Display Clock Divide Ratio/Oscillator Frequency
             #display.write_cmd(frequency_value)
             last_update_time = current_time
         
@@ -337,6 +387,8 @@ def main():
                 
             # Draw the square
             display.fill_rectangle(square['x'], square['y'], square['size'], square['size'], square['color'])
+            # 使用 blit 方法貼上鑽石位圖
+            #display.drawBitmap(Image_fb, square['x'], square['y'])
         
         # Display the current frequency value
         display.text('Freq: {}'.format(frequency_value), 0, 0, 1)
