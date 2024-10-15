@@ -147,16 +147,13 @@ if __name__ == '__main__':
 
 
 
-
-
-
 請幫我寫出：
 1. 這是連接到 Wi-Fi 的 SSID 與密碼：
-    SSID = "WIFI 的 SSID"
-    PASSWORD = "WIFI 的 密碼"
+    SSID = "TP-Link_5E4C_2.4G"
+    PASSWORD = "0976023369"
 2. 還沒連上 Wi-Fi 的時候，讓內建的 LED 不斷閃爍，一旦連上就恆亮
 3. 把 ip 跟 MAC 地址顯示在 OLED 上
-4. MQTT 服務器：https://broker.mqttgo.io/
+4. MQTT 服務器：broker.mqttgo.io
 5. 按下按鈕就推送這樣的訊息到 MQTT 服務器，如果傳送成功就讓 LED 轉態
     傳送主題(Topic)：pico_w/led
     訊息：MAC 地址 + 時間 + LED 狀態
