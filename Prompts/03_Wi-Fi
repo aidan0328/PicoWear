@@ -148,6 +148,7 @@ if __name__ == '__main__':
 
 
 請幫我寫出：
+
 1. 這是連接到 Wi-Fi 的 SSID 與密碼：
     SSID = "WIFI 的 SSID"
     PASSWORD = "WIFI 的 密碼"
