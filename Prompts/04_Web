@@ -153,6 +153,6 @@ if __name__ == '__main__':
     SSID = "WIFI 的 SSID"
     PASSWORD = "WIFI 的 密碼"
 2. 還沒連上 Wi-Fi 的時候，讓內建的 LED 不斷閃爍，一旦連上就恆亮
-3. 把 ip 顯示在 OLED 上
+3. 把 IP 顯示在 OLED 上
 4. 連上 Wi-Fi 之後，提供一個全英文的 Web 服務器
 5. 網頁有2個按鈕，可以控制內建 LED 的亮、滅

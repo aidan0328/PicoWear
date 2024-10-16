@@ -153,7 +153,7 @@ if __name__ == '__main__':
     SSID = "WIFI 的 SSID"
     PASSWORD = "WIFI 的 密碼"
 2. 還沒連上 Wi-Fi 的時候，讓內建的 LED 不斷閃爍，一旦連上就恆亮
-3. 把 ip 跟 MAC 地址顯示在 OLED 上
+3. 把 IP 跟 MAC 地址顯示在 OLED 上
 4. MQTT 服務器：broker.mqttgo.io
 5. 訂閱一則 MQTT 訊息，訂閱主題：pico_w/led，將收到的顯示在 OLED
 6. 每收到一則MQTT 訊息，就讓 LED 轉態
