@@ -3,7 +3,7 @@ import time
 
 # ========== 全域變數 ========== 
 pico_wear = None
-mqtt_topic = 'pico_w'
+mqtt_topic = 'pico_w/led'
 mqtt_broker = 'broker.mqttgo.io'
 
 # ============================= 
